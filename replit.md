@@ -55,9 +55,10 @@ AllergyTracker is a modern web application designed to help users manage and tra
 5. **Response**: JSON responses sent back to client with proper error handling
 
 ### Database Schema
+- **Users Table**: Stores user accounts with username and hashed passwords
 - **Foods Table**: Stores food items with name, instructions, color, frequency, and status
 - **Schedule Entries Table**: Tracks daily food scheduling with completion status
-- **Foreign Key Relationships**: Schedule entries reference foods table
+- **Foreign Key Relationships**: Foods and schedule entries are linked to users for data isolation
 
 ## External Dependencies
 
@@ -96,6 +97,28 @@ AllergyTracker is a modern web application designed to help users manage and tra
 ## Recent Changes
 ```
 Recent Updates:
+- November 18, 2025: FINAL CALENDAR EXPORT FIX - Perfect recurring events for Apple Calendar
+  • Fixed mid-range exports: DTSTART now uses first entry date in export window (not food.startDate)
+  • Fixed "X times per week": Added proper BYDAY parameter (e.g., BYDAY=MO,WE,FR for 3x/week)
+  • Fixed weekday ordering: Chronological sort (MO,TU,WE...) instead of lexicographic (FR,MO,WE)
+  • Fixed subscription endpoint: Uses earliest entry date for DTSTART when multi-day patterns exist
+  • Fixed UNTIL date: Now based on current date + 1 year (not startDate + 1 year) for old schedules
+  • All Apple Calendar requirements met: COUNT/UNTIL termination, proper BYDAY, correct DTSTART
+  • Events now appear on all scheduled days with correct times - fully working calendar integration
+- November 10, 2025: Fixed calendar export recurring events (initial implementation)
+  • Added RRULE support to calendar exports so events repeat properly in Apple Calendar
+  • Implemented getRecurringRule() function to convert frequency strings to iCalendar format
+  • "Every day" → RRULE:FREQ=DAILY, "Every 2 days" → RRULE:FREQ=DAILY;INTERVAL=2
+  • Added full timezone support with America/New_York including DST transitions
+  • Events now show at correct time (not all-day) with proper recurring patterns
+- October 13, 2025: Replaced Replit Auth with platform-agnostic authentication
+  • Removed all Replit-specific auth code (works on any platform now)
+  • Implemented simple username/password authentication with bcrypt hashing
+  • Added session regeneration on login/register to prevent session fixation attacks
+  • Created tabbed login/register UI with form validation
+  • Each user now has private, isolated food lists and schedules
+  • Fully compatible with Render deployment (no Replit dependencies)
+  • Requires SESSION_SECRET environment variable in production for security
 - August 07, 2025: READY FOR DEPLOYMENT - Simplified and optimized
   • Removed AI camera scanner to eliminate OpenAI dependency
   • Perfect mobile portrait layout with proper button sizing (36px) and spacing

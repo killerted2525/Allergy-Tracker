@@ -84,34 +84,30 @@ git push -u origin main
 6. Configure:
    - **Name:** `allergy-tracker`
    - **Environment:** `Node`
-   - **Build Command:** `npm install && npm run build`
+   - **Build Command:** `npm install && npm run build && npm run db:push`
    - **Start Command:** `npm start`
    - **Instance Type:** Free
 
-### Step 6: Add Environment Variable
+### Step 6: Add Environment Variables
 
 Still on Render setup page:
 
 1. Scroll to **Environment Variables**
-2. Click **Add Environment Variable**
-3. Set:
+2. Click **Add Environment Variable** and add BOTH:
+   
+   **First variable:**
    - **Key:** `DATABASE_URL`
    - **Value:** [Paste your Neon connection string from Step 4]
-4. Click **Create Web Service**
+   
+   **Second variable:**
+   - **Key:** `SESSION_SECRET`
+   - **Value:** [Any random string, e.g., `my-super-secret-key-12345`]
+   
+3. Click **Create Web Service**
 
 **⏳ Render will now build and deploy your app (takes 2-5 minutes)**
 
-### Step 7: Run Database Migration
-
-After deployment completes:
-
-1. In Render dashboard, click your `allergy-tracker` service
-2. Click **Shell** tab (left sidebar)
-3. Run:
-   ```bash
-   npm run db:push
-   ```
-4. Wait for "✔ Database schema synced" message
+The build process automatically sets up your database, so no manual steps needed!
 
 **🎉 Your app is now live!**
 
@@ -146,8 +142,8 @@ git push
 
 ### App won't start
 - Check Render logs: Dashboard → Your Service → Logs
-- Verify `DATABASE_URL` is set correctly
-- Try running `npm run db:push` in Render Shell
+- Verify BOTH `DATABASE_URL` and `SESSION_SECRET` are set correctly
+- Make sure build command includes `npm run db:push`
 
 ### Database issues
 - Verify Neon database is active at [console.neon.tech](https://console.neon.tech)
